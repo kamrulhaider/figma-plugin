@@ -1,0 +1,253 @@
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+  crossorigin="anonymous"
+/>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+  crossorigin="anonymous"
+></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+/>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap");
+  * {
+    font-family: "Sora", sans-serif;
+  }
+  .search-icon {
+    padding: 5px;
+  }
+  .search-icon i {
+    font-size: 16px;
+  }
+  .search-input {
+    width: 98%;
+    margin: 0 auto;
+    border-radius: 5px;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid rgb(196, 196, 196);
+  }
+  .search-input-field {
+    border: 0;
+    width: 90%;
+    outline: none;
+  }
+  .tabs-container {
+    display: flex;
+    justify-content: space-between;
+    width: 98%;
+    margin: 0 auto;
+    margin-top: 10px;
+    padding: 1px;
+  }
+  .tabs {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .tab-btn {
+    border: none;
+    padding: 4px 16px;
+    margin: 2px;
+    font-size: 11px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .tab-btn-click {
+    background-color: #fff;
+    box-shadow: 0 0 2px gray;
+  }
+  .list-icon {
+    background-color: transparent;
+    border: none;
+    padding: 3px;
+  }
+  .list-icon i {
+    font-size: 20px;
+  }
+  .icon-list-container {
+    width: 98%;
+    margin-top: 10px;
+  }
+  .icon-list-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5%;
+  }
+  .icon-list-grid img {
+    width: 100%;
+    height: 20px;
+  }
+  .offcanvas.offcanvas-bottom {
+    height: auto;
+  }
+</style>
+
+<!-- search input  -->
+<div class="search-input">
+  <i class="bi bi-search search-icon"></i>
+  <input
+    onkeyup="SearchTxt()"
+    class="search-input-field"
+    type="text"
+    placeholder="search"
+    id="search-input"
+  />
+</div>
+
+<!-- tabs button  -->
+<div class="tabs-container">
+  <div class="tabs">
+    <button id="all" class="tab-btn tab-btn-click" type="button">All</button>
+    <button id="stroke" class="tab-btn" type="button">Stroke</button>
+    <button id="solid" class="tab-btn" type="button">Solid</button>
+    <button id="duo_color" class="tab-btn" type="button">Duo Color</button>
+    <button id="two_tone" class="tab-btn" type="button">Two Tone</button>
+  </div>
+  <div class="dropdown">
+    <div
+      class="list-icon"
+      role="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="bi bi-list"></i>
+    </div>
+
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item fs-6" href="#">Request icon</a></li>
+      <li><a class="dropdown-item fs-6" href="#">Send feedback</a></li>
+      <li><hr class="dropdown-divider" /></li>
+      <li
+        ><a
+          class="dropdown-item fs-6"
+          href="#"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasBottom"
+          aria-controls="offcanvasBottom"
+          >Login</a
+        ></li
+      >
+    </ul>
+  </div>
+</div>
+
+<!-- bottom offcanvas  -->
+<div
+  class="offcanvas offcanvas-bottom rounded rounded-start"
+  tabindex="-1"
+  id="offcanvasBottom"
+  aria-labelledby="offcanvasBottomLabel"
+>
+  <div class="offcanvas-header pb-0">
+    <h5 class="offcanvas-title" id="offcanvasBottomLabel">Login</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <!-- offcanvar body -->
+  <div class="offcanvas-body">
+    <form>
+      <input type="email" class="form-control" placeholder="Email" />
+      <input type="password" class="form-control mt-3" placeholder="Password" />
+      <div class="form-check mt-3 d-flex justify-content-between">
+        <div>
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="flexCheckDefault"
+          />
+          <label class="form-check-label" for="flexCheckDefault">
+            Remember me
+          </label>
+        </div>
+        <a class="text-decoration-none text-success" href="#"
+          >Forget password?</a
+        >
+      </div>
+      <button disabled class="btn btn-success w-100 mt-3">Login</button>
+    </form>
+  </div>
+</div>
+
+<!-- icon grid  -->
+<div class="icon-list-container">
+  <div id="icon-list-grid" class="icon-list-grid"> </div>
+</div>
+<script>
+  // showing all the Icon
+  fetch("https://test.nzcoding.com/api/v1/huge-icons")
+    .then((response) => response.json())
+    .then((data) => ShowAll(data));
+  const ShowAll = (icons) => {
+    const TotalIcon = icons;
+    const IconGrid = document.getElementById("icon-list-grid");
+    // IconGrid.innerHTML = "";
+    TotalIcon.forEach((element) => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+       <img src="${element.icon}" alt="" />
+       `;
+      IconGrid.appendChild(div);
+    });
+  };
+
+  function ShowIconList(style, search = "") {
+    const StyleName = style === "all" ? "" : style;
+    const SearchTxt = search;
+
+    fetch(
+      `https://test.nzcoding.com/api/v1/huge-icons?search_value=${SearchTxt}&style=${StyleName}`
+    )
+      .then((response) => response.json())
+      .then((data) => ShowAll(data));
+    const ShowAll = (icons) => {
+      const TotalIcon = icons;
+      const IconGrid = document.getElementById("icon-list-grid");
+      IconGrid.innerHTML = "";
+      TotalIcon.forEach((element) => {
+        const div = document.createElement("div");
+
+        div.innerHTML = `
+       <img src="${element.icon}" alt="" />
+       `;
+        IconGrid.appendChild(div);
+      });
+    };
+  }
+  const TabBtnList = document.getElementsByClassName("tab-btn");
+  let ClickedTab = "";
+  let SearchInputTxt = "";
+  for (let i = 0; i < TabBtnList.length; i++) {
+    TabBtnList[i].addEventListener("click", () => {
+      const id = TabBtnList[i].getAttribute("id");
+      TabBtnList[i].classList.add("tab-btn-click");
+      for (let i = 0; i < TabBtnList.length; i++) {
+        const newId = TabBtnList[i].getAttribute("id");
+        if (id !== newId) {
+          TabBtnList[i].classList.remove("tab-btn-click");
+        }
+        ClickedTab = id;
+      }
+      ShowIconList(id, SearchInputTxt);
+    });
+  }
+  // collect search input
+  function SearchTxt() {
+    const Txt = document.getElementById("search-input").value;
+    SearchInputTxt = Txt;
+    ShowIconList(ClickedTab, Txt);
+  }
+</script>

@@ -1,0 +1,8 @@
+{
+  "name": "Huge icon",
+  "id": "1198515135349907143",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"],
+  "ui": "ui.html"
+}
