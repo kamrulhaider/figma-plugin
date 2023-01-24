@@ -18,6 +18,20 @@
   * {
     font-family: "Sora", sans-serif;
   }
+  .btn-bg-color {
+    background-color: #14c332;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  .btn-bg-color:hover {
+    background-color: #92949e;
+  }
+  .huge-text-color {
+    color: #14c332;
+  }
   .search-icon {
     padding: 5px;
   }
@@ -25,7 +39,7 @@
     font-size: 16px;
   }
   .search-input {
-    width: 98%;
+    width: 95%;
     margin: 0 auto;
     border-radius: 5px;
     margin-top: 5px;
@@ -40,7 +54,7 @@
   .tabs-container {
     display: flex;
     justify-content: space-between;
-    width: 98%;
+    width: 95%;
     margin: 0 auto;
     margin-top: 10px;
     padding: 1px;
@@ -73,13 +87,14 @@
     font-size: 20px;
   }
   .icon-list-container {
-    width: 98%;
-    margin-top: 10px;
+    margin: 10px auto;
+    width: 90%;
   }
   .icon-list-grid {
     display: grid;
+    justify-content: center;
     grid-template-columns: repeat(6, 1fr);
-    gap: 5%;
+    gap: 20px;
   }
   .icon-list-grid img {
     width: 100%;
@@ -87,6 +102,50 @@
   }
   .offcanvas.offcanvas-bottom {
     height: auto;
+  }
+  footer p {
+    font-size: 11px;
+  }
+  .mytooltip {
+    position: relative;
+    display: inline-block;
+  }
+
+  .mytooltip .mytooltiptext {
+    visibility: hidden;
+    /* width: 120px; */
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 11px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -30px;
+  }
+
+  .mytooltip .mytooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+
+  .mytooltip:hover .mytooltiptext {
+    visibility: visible;
+  }
+  .modal-items {
+    margin: 0 auto;
+  }
+  .para-text {
+    font-size: 11px;
   }
 </style>
 
@@ -108,7 +167,7 @@
     <button id="all" class="tab-btn tab-btn-click" type="button">All</button>
     <button id="stroke" class="tab-btn" type="button">Stroke</button>
     <button id="solid" class="tab-btn" type="button">Solid</button>
-    <button id="duo_color" class="tab-btn" type="button">Duo Color</button>
+    <button id="duotone" class="tab-btn" type="button">Duo Color</button>
     <button id="two_tone" class="tab-btn" type="button">Two Tone</button>
   </div>
   <div class="dropdown">
@@ -131,7 +190,7 @@
           href="#"
           type="button"
           data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasBottom"
+          data-bs-target="#offcanvasLoginBottom"
           aria-controls="offcanvasBottom"
           >Login</a
         ></li
@@ -144,7 +203,7 @@
 <div
   class="offcanvas offcanvas-bottom rounded rounded-start"
   tabindex="-1"
-  id="offcanvasBottom"
+  id="offcanvasLoginBottom"
   aria-labelledby="offcanvasBottomLabel"
 >
   <div class="offcanvas-header pb-0">
@@ -159,7 +218,12 @@
   <!-- offcanvar body -->
   <div class="offcanvas-body">
     <form>
-      <input type="email" class="form-control" placeholder="Email" />
+      <input
+        id="email-input"
+        type="email"
+        class="form-control"
+        placeholder="Email"
+      />
       <input type="password" class="form-control mt-3" placeholder="Password" />
       <div class="form-check mt-3 d-flex justify-content-between">
         <div>
@@ -177,28 +241,145 @@
           >Forget password?</a
         >
       </div>
-      <button disabled class="btn btn-success w-100 mt-3">Login</button>
+      <button
+        disabled
+        id="login-btn"
+        class="btn-bg-color text-white w-100 mt-3 py-2"
+        >Login</button
+      >
     </form>
   </div>
 </div>
 
+<!-- bottom access offcanvas  -->
+<div
+  class="offcanvas offcanvas-bottom rounded rounded-start"
+  tabindex="-1"
+  id="offcanvasAccessBottom"
+  aria-labelledby="offcanvasBottomLabel"
+>
+  <div class="offcanvas-header pb-0">
+    <h5 class="offcanvas-title" id="offcanvasBottomLabel">Login</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <!-- offcanvar body -->
+  <div class="offcanvas-body">
+    <form>
+      <input
+        id="access-key-input"
+        type="text"
+        class="form-control"
+        placeholder="KEY"
+      />
+      <button id="access-btn" class="btn-bg-color text-white w-100 mt-3 py-2"
+        >Get Access</button
+      >
+    </form>
+    <p class="text-center para-text"
+      >You will find the KEY in your first Gumroad mail and account</p
+    >
+    <a
+      href="#"
+      class="huge-text-color text-decoration-none text-center d-block para-text"
+      >Contact Support</a
+    >
+  </div>
+</div>
+
 <!-- icon grid  -->
-<div class="icon-list-container">
+<div id="icon-list-container" class="icon-list-container">
   <div id="icon-list-grid" class="icon-list-grid"> </div>
 </div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog-centered modal-dialog">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body">
+        <div class="modal-items w-75 p-3 rounded bg-white">
+          <p
+            >If you want to unlock all icons, click the unlock button and then
+            buy the huge icon from Gumroad. You will then have access for one
+            year using your email id.</p
+          >
+          <a
+            target="_blank"
+            class="d-inline-block btn-bg-color w-100 text-center rounded py-2 px-3 text-decoration-none text-white"
+            href="#"
+            >Unlock for $45</a
+          >
+          <a
+            href="#"
+            id="accessModal"
+            class="text-decoration-none huge-text-color text-center w-100 mt-3 d-inline-block"
+            type="button"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <p
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasAccessBottom"
+              aria-controls="offcanvasBottom"
+              class="huge-text-color"
+              >Already have? Get Access</p
+            >
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="fixed-bottom bg-white py-2 d-flex justify-content-center">
+  <div class="w-75 text-center">
+    <p class="d-inline">Buy full access from</p>
+    <p class="text-warning mb-0 d-inline"
+      ><i class="bi bi-globe mx-1"></i>Buy from gumroad</p
+    >
+  </div>
+</footer>
+
 <script>
   // showing all the Icon
-  fetch("https://test.nzcoding.com/api/v1/huge-icons")
+  fetch("https://hugeidea.design/api/v1/huge-icons")
     .then((response) => response.json())
     .then((data) => ShowAll(data));
   const ShowAll = (icons) => {
-    const TotalIcon = icons;
+    const TotalIcon = icons.all_icons.data;
+    console.log(TotalIcon);
     const IconGrid = document.getElementById("icon-list-grid");
     // IconGrid.innerHTML = "";
     TotalIcon.forEach((element) => {
       const div = document.createElement("div");
+      div.classList.add("mytooltip");
+      const IconLink =
+        element.type === "free"
+          ? `<a target="_blank" href=${element.icon}>
+         <img src="${element.icon}" alt="" />
+        </a>
+        `
+          : `
+        <a class="" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <img src="${element.icon}" alt="" />
+        </a>
+        `;
+      const FreeIcon =
+        element.type === "free"
+          ? `<span class="text-success">${element.type}</span>`
+          : `<span class="text-warning">${element.type}</span>`;
       div.innerHTML = `
-       <img src="${element.icon}" alt="" />
+      ${IconLink}
+      <span class="mytooltiptext">${element.name} ${FreeIcon}</span>
        `;
       IconGrid.appendChild(div);
     });
@@ -209,22 +390,56 @@
     const SearchTxt = search;
 
     fetch(
-      `https://test.nzcoding.com/api/v1/huge-icons?search_value=${SearchTxt}&style=${StyleName}`
+      `https://hugeidea.design/api/v1/huge-icons?search_value=${SearchTxt}&style=${StyleName}`
     )
       .then((response) => response.json())
       .then((data) => ShowAll(data));
     const ShowAll = (icons) => {
-      const TotalIcon = icons;
-      const IconGrid = document.getElementById("icon-list-grid");
-      IconGrid.innerHTML = "";
-      TotalIcon.forEach((element) => {
+      const TotalIcon = icons.all_icons.data;
+      console.log(TotalIcon);
+      if (TotalIcon.length < 1) {
+        const IconGrid = document.getElementById("icon-list-grid");
+        IconGrid.innerHTML = "";
+        IconGrid.classList.remove("icon-list-grid");
         const div = document.createElement("div");
-
         div.innerHTML = `
-       <img src="${element.icon}" alt="" />
-       `;
+        <div class="text-center mt-5">
+           <img width="100px" src="https://i.ibb.co/Jz80Gvr/error-svgrepo-com.png" />
+           <p class="fw-bold my-2">We’re sorry we don’t have icons for '${SearchTxt}'</>
+            <p class="para-text mb-3">If you can't find the icon, you can click on ‘Request icon’</p>
+            <a href="#" class="btn-bg-color mt-3 py-2 px-4 text-decoration-none rounded">Request icon</a>
+        </div>
+        `;
         IconGrid.appendChild(div);
-      });
+      } else {
+        const IconGrid = document.getElementById("icon-list-grid");
+        IconGrid.innerHTML = "";
+        IconGrid.classList.add("icon-list-grid");
+        TotalIcon.forEach((element) => {
+          const div = document.createElement("div");
+          div.classList.add("mytooltip");
+          const IconLink =
+            element.type === "free"
+              ? `<a target="_blank" href=${element.icon}>
+         <img src="${element.icon}" alt="" />
+        </a>
+        `
+              : `
+        <a class="" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <img src="${element.icon}" alt="" />
+        </a>
+        `;
+          const FreeIcon =
+            element.type === "free"
+              ? `<span class="text-success">${element.type}</span>`
+              : `<span class="text-warning">${element.type}</span>`;
+          div.innerHTML = `
+      ${IconLink}
+      <span class="mytooltiptext">${element.name} ${FreeIcon}</span>
+       `;
+          IconGrid.appendChild(div);
+        });
+      }
     };
   }
   const TabBtnList = document.getElementsByClassName("tab-btn");
